@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-commerce Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body
+    class="p-4"
+    style="background: linear-gradient(135deg, #ffd700, #fffacd)"
+  >
+    <div class="container">
+      <h1 class="text-center bg-dark text-white p-3 mb-4">
+        E-commerce Dashboard
+      </h1>
+
+      <div id="notification"></div>
+
+      <div class="row" id="product-list"></div>
+    </div>
+
+    <script>
+      const products = [
+        {
+          id: 1,
+          name: "Laptop",
+          price: 1500,
+          stock: 5,
+          image:
+            "https://i.pinimg.com/474x/74/ab/c4/74abc42de4669a1bc9b7609b42588e27.jpg",
+        },
+        {
+          id: 2,
+          name: "Headphones",
+          price: 100,
+          stock: 10,
+          image:
+            "https://images.stockcake.com/public/4/f/1/4f14c5f7-86f0-4122-bbcc-5a1054c3d090_large/golden-luxurious-headphones-stockcake.jpg",
+        },
+        {
+          id: 3,
+          name: "Keyboard",
+          price: 50,
+          stock: 20,
+          image: "https://i.redd.it/p1065lht13v31.jpg",
+        },
+      ];
+
+      function displayProducts() {
+        const productList = document.getElementById("product-list");
+        products.forEach((product) => {
+          const productCard = `
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="${product.image}" alt="${product.name}" class="card-img-top" style="height: 150px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text">Price: $${product.price}<br><span id="stock${product.id}">In Stock: ${product.stock}</span></p>
+                                <button class="btn btn-primary" onclick="addToCart(${product.id})">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+          productList.innerHTML += productCard;
+        });
+      }
+
+      function addToCart(productId) {
+        const product = products.find((p) => p.id === productId);
+        if (product && product.stock > 0) {
+          product.stock--;
+          displayNotification(`${product.name} added to cart successfully.`);
+          document.getElementById(
+            `stock${productId}`
+          ).textContent = `In Stock: ${product.stock}`;
+        } else {
+          alert(
+            `Sorry, ${product ? product.name : "this product"} is out of stock.`
+          );
+        }
+      }
+
+      function displayNotification(message) {
+        const notification = document.getElementById("notification");
+        notification.innerHTML = `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            `;
+      }
+
+      displayProducts();
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <footer class="text-center bg-dark text-white py-2">
+      <p>Contact Me | FB (Jehu Joshua Besañes)</p>
+    </footer>
+  </body>
+</html>
